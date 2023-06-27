@@ -1,16 +1,37 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
+import { api } from "@/config/api";
 
 export const SigninUser = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const navigate = useNavigate();
 
-  const handleSignin = () => {};
+  const handleSignin = async () => {
+    if (
+      username === "" ||
+      email === "" ||
+      password === "" ||
+      password !== passwordConfirmation
+    )
+      return;
+    const response = await api.post("/users", {
+      name: username,
+      admin: false,
+      email,
+      password,
+    });
+    if (response.data) {
+      alert("Usuário cadastrado com sucesso!");
+      navigate("/");
+    }
+    else alert("Não foi possível cadastrar o usuário");
+  };
 
   return (
     <Box
@@ -50,6 +71,7 @@ export const SigninUser = () => {
           onChange={(event) => setPasswordConfirmation(event.target.value)}
           value={passwordConfirmation}
           placeholder="confirme sua senha"
+          error={password !== passwordConfirmation}
         />
         <Button onClick={handleSignin}>Sign IN</Button>
       </Box>
