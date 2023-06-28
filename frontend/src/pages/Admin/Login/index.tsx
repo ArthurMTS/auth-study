@@ -28,7 +28,17 @@ export const LoginAdmin = () => {
     event.preventDefault();
   };
 
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    if (email === "" || password === "") return;
+    const response = await api.post("/users/login", {
+      email,
+      password,
+      admin: true,
+    });
+    if (response.data === "") {
+      alert("Usuário não encontrado. Por favor confira seus dados.");
+    } else navigate("/dashboard");
+  };
 
   return (
     <Box
