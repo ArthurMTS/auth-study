@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -9,10 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { UserContext } from "@/contexts/user";
 
 export const SigninUser = () => {
   const [username, setUsername] = useState("");
@@ -22,7 +23,12 @@ export const SigninUser = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmationPassword, setShowConfirmationPassword] =
     useState(false);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.name) navigate("/home");
+  }, [user]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
