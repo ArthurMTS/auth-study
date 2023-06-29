@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -13,11 +13,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { UserContext } from "@/contexts/user";
 
 export const LoginUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -37,7 +39,10 @@ export const LoginUser = () => {
     });
     if (response.data === "") {
       alert("Usuário não encontrado. Por favor confira seus dados.");
-    } else navigate("/home");
+    } else {
+      setUser(response.data);
+      navigate("/home")
+    }
   };
 
   return (
