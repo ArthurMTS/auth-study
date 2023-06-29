@@ -1,10 +1,19 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Button, IconButton, InputAdornment, OutlinedInput, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
+import { api } from "@/config/api";
 
 export const Home = () => {
   const { user, setUser } = useContext(UserContext);
@@ -24,11 +33,38 @@ export const Home = () => {
   ) => {
     event.preventDefault();
   };
-  const handleUpdate = () => {};
   const handleLogOut = () => {
     setUser({} as iUser);
   };
-  const handleDelete = () => {};
+  const handleUpdate = async () => {
+    const response = await api.put(`/users/${user.id}`, {
+      name: username,
+      email,
+      password,
+    });
+
+    if (response.data) {
+      const response = await api.post("/users/login", {
+        email,
+        password,
+        admin: false,
+      });
+      setUser(response.data);
+      alert("Dados atualizados com sucesso!");
+    } else {
+      alert("Sinto muito, ocorreu um erro!");
+    }
+  };
+  const handleDelete = async () => {
+    if (!confirm("Essa ação é irreversível, tem certeza que deseja continuar?"))
+      return;
+    const response = await api.delete(`/users/${user.id}`);
+    if (response.data) {
+      alert("Usuário excluido com sucesso");
+      setUser({} as iUser);
+      navigate("/");
+    }
+  };
 
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
@@ -76,6 +112,11 @@ export const Home = () => {
         <Button
           sx={{ background: "#21eb4d", color: "#fff" }}
           onClick={handleUpdate}
+          disabled={
+            username === user.name &&
+            email === user.email &&
+            password === user.password
+          }
         >
           Atualizar
         </Button>
