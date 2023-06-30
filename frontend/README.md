@@ -19,3 +19,5 @@ Depois de seguir todo o passo a passo dos outros READMEs, pare e analise os arqu
   - [ ] o Admin poderá deslogar e ser redirecionado a tela de login de admin;
   - [ ] o Admin poderá excluir usuário listados no dashboard, ao clicar no botão de excluir usuário, o sistema deve mostrar um alerta de confirm perguntando se o Admin realmente quer excluir o usuário, caso confirmado deve ser realizado uma requisição a API pedindo para excluir o usuário.
 - [ ] O usuário não pode acessar o DASHBOARD e o admin não pode acessar o HOME.
+- [ ] Caso o usuário esteja logado, o mesmo não pode acessar a tela de login ou signin de usuário, pois já está logado, então deve ser redirecionado delas para a tela home.
+- [ ] Caso o admin esteja logado, o mesmo não pode acessar a tela de login ou signin de admin, pois já está logado, então deve ser redirecionado delas para a tela dashboard.
