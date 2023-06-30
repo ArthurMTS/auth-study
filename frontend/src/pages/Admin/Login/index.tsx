@@ -24,7 +24,7 @@ export const LoginAdmin = () => {
 
   useEffect(() => {
     if (user.name && user.admin) navigate("/dashboard");
-    else navigate("/home");
+    else if (user.name && !user.admin) navigate("/home");
   }, [user]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

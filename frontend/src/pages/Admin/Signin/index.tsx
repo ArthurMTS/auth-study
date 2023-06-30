@@ -28,7 +28,7 @@ export const SigninAdmin = () => {
 
   useEffect(() => {
     if (user.name && user.admin) navigate("/dashboard");
-    else navigate("/home");
+    else if (user.name && !user.admin) navigate("/home");
   }, [user]);
 
 

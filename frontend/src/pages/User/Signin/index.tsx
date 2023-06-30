@@ -27,7 +27,8 @@ export const SigninUser = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.name) navigate("/home");
+    if (user.name && !user.admin) navigate("/home");
+    else if (user.name && user.admin) navigate("/dashboard");
   }, [user]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

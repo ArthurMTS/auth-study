@@ -33,7 +33,7 @@ export const Dashboard = () => {
     <Box sx={{ width: 500, margin: "20px auto" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography sx={{ fontSize: 26 }}>
-          Painel de Admin, nome-admin
+          Painel de Admin, {user.name}
         </Typography>
         <Button
           sx={{ background: "#eb2142", color: "#fff" }}

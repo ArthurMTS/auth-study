@@ -25,6 +25,7 @@ export const Home = () => {
 
   useEffect(() => {
     if (!user.name) navigate("/");
+    else if (user.name && user.admin) navigate("/dashboard");
   }, [user]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
