@@ -1,5 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 
+import { api } from "@/config/api";
+
 interface UserProps {
   id: number;
   name: string;
@@ -7,7 +9,15 @@ interface UserProps {
 }
 
 export const User = ({ id, name, email }: UserProps) => {
-  const handleRemove = () => {};
+  const handleRemove = async () => {
+    if (!confirm("Essa ação é irreversível, tem certeza que deseja continuar?"))
+      return;
+    const response = await api.delete(`/users/${id}`);
+    if (response.data) {
+      alert("Usuário removido com sucesso");
+      location.reload();
+    }
+  };
 
   return (
     <Box
