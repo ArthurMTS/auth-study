@@ -14,9 +14,9 @@ Depois de seguir todo o passo a passo dos outros READMEs, pare e analise os arqu
   - [x] Quando o usuário clicar em log out ele deve ser deslogado e retornado a tela de log in.
   - [x] As informações do usuário mostradas nos inputs deve poder ser editadas, e quando o mesmo clicar em "atualizar" uma requisição deve ser enviada para a API para atualiza-las de acordo com o valor atual dos inputs.
   - [x] Caso o usuário clique em "Deletar" uma requisição para a API deve ser chamada excluindo o cadastro do mesmo (para excluir basta mandar o id do mesmo), ele deve ser deslogado e retornado a tela de log in em seguida.
-- [ ] Apenas um usuário com permissão de admin deve poder ter acesso a tela de DASHBOARD, caso o usuário não seja admin ou não esteja logado ele deve ser redirecionado a tela de login de admin;
-- [ ] Na tela de dashboad deve ser listado TODOS os usuário NÃO ADMINISTRADORES cadastrados no banco de dados:
-  - [ ] o Admin poderá deslogar e ser redirecionado a tela de login de admin;
+- [x] Apenas um usuário com permissão de admin deve poder ter acesso a tela de DASHBOARD, caso o usuário não seja admin ou não esteja logado ele deve ser redirecionado a tela de login de admin;
+- [x] Na tela de dashboad deve ser listado TODOS os usuário NÃO ADMINISTRADORES cadastrados no banco de dados:
+  - [x] o Admin poderá deslogar e ser redirecionado a tela de login de admin;
   - [ ] o Admin poderá excluir usuário listados no dashboard, ao clicar no botão de excluir usuário, o sistema deve mostrar um alerta de confirm perguntando se o Admin realmente quer excluir o usuário, caso confirmado deve ser realizado uma requisição a API pedindo para excluir o usuário.
 - [x] O usuário não pode acessar o DASHBOARD e o admin não pode acessar o HOME.
 - [x] Caso o usuário esteja logado, o mesmo não pode acessar a tela de login ou signin de usuário, pois já está logado, então deve ser redirecionado delas para a tela home.
