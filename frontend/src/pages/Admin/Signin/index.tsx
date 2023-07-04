@@ -1,28 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { UserContext } from "@/contexts/user";
+import { PasswordInput } from "@/components";
 
 export const SigninAdmin = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmationPassword, setShowConfirmationPassword] =
-    useState(false);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -30,21 +19,6 @@ export const SigninAdmin = () => {
     if (user.name && user.admin) navigate("/dashboard");
     else if (user.name && !user.admin) navigate("/home");
   }, [user]);
-
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-  const handleClickShowConfirmationPassword = () =>
-    setShowConfirmationPassword((show) => !show);
-  const handleMouseDownConfirmationPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
 
   const handleSignin = async () => {
     if (
@@ -95,41 +69,15 @@ export const SigninAdmin = () => {
           value={email}
           placeholder="informe seu email"
         />
-        <OutlinedInput
-          type={showPassword ? "text" : "password"}
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
+        <PasswordInput
           placeholder="informe sua senha"
+          value={password}
+          onChange={setPassword}
         />
-        <OutlinedInput
-          type={showConfirmationPassword ? "text" : "password"}
-          onChange={(event) => setPasswordConfirmation(event.target.value)}
-          value={passwordConfirmation}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowConfirmationPassword}
-                onMouseDown={handleMouseDownConfirmationPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
+        <PasswordInput
           placeholder="confirme sua senha"
+          value={passwordConfirmation}
+          onChange={setPasswordConfirmation}
           error={password != passwordConfirmation}
         />
         <Button onClick={handleSignin}>Sign IN</Button>

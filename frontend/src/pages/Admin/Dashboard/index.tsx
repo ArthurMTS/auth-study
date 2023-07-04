@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { User } from "@/components";
+import { Header, User } from "@/components";
 import { iUser } from "@/config/types";
 import { UserContext } from "@/contexts/user";
 import { api } from "@/config/api";
@@ -31,17 +31,11 @@ export const Dashboard = () => {
 
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography sx={{ fontSize: 26 }}>
-          Painel de Admin, {user.name}
-        </Typography>
-        <Button
-          sx={{ background: "#eb2142", color: "#fff" }}
-          onClick={handleLogOut}
-        >
-          Log Out
-        </Button>
-      </Box>
+      <Header
+        title="Painel de Admin"
+        username={user.name}
+        onLogOut={handleLogOut}
+      />
 
       <Box
         sx={{ marginTop: 5, display: "flex", flexDirection: "column", gap: 2 }}

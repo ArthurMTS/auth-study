@@ -1,26 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
 import { api } from "@/config/api";
+import { Header, PasswordInput } from "@/components";
 
 export const Home = () => {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState(user.password);
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,12 +19,6 @@ export const Home = () => {
     else if (user.name && user.admin) navigate("/dashboard");
   }, [user]);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
   const handleLogOut = () => {
     setUser({} as iUser);
   };
@@ -69,15 +54,7 @@ export const Home = () => {
 
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography sx={{ fontSize: 26 }}>Bem-vindo, {user.name}.</Typography>
-        <Button
-          sx={{ background: "#eb2142", color: "#fff" }}
-          onClick={handleLogOut}
-        >
-          Log Out
-        </Button>
-      </Box>
+      <Header title="Bem-vindo" username={user.name} onLogOut={handleLogOut} />
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <TextField
@@ -92,23 +69,10 @@ export const Home = () => {
           value={email}
           placeholder="informe seu email"
         />
-        <OutlinedInput
-          type={showPassword ? "text" : "password"}
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
+        <PasswordInput
           placeholder="mude sua senha"
+          value={password}
+          onChange={setPassword}
         />
         <Button
           sx={{ background: "#21eb4d", color: "#fff" }}

@@ -1,24 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
+import { PasswordInput } from "@/components";
 
 export const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -27,12 +18,6 @@ export const LoginAdmin = () => {
     else if (user.name && !user.admin) navigate("/home");
   }, [user]);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
   const handleLogin = async () => {
     if (email === "" || password === "") return;
     const response = await api.post("/users/login", {
@@ -71,23 +56,10 @@ export const LoginAdmin = () => {
           value={email}
           placeholder="informe seu email"
         />
-        <OutlinedInput
-          type={showPassword ? "text" : "password"}
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
+        <PasswordInput
           placeholder="informe sua senha"
+          value={password}
+          onChange={setPassword}
         />
         <Button onClick={handleLogin}>Log IN</Button>
       </Box>
