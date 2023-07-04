@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Header, User } from "@/components";
 import { iUser } from "@/config/types";
 import { UserContext } from "@/contexts/user";
-import { api } from "@/config/api";
+import { getUsers } from "@/utils/user";
 
 export const Dashboard = () => {
   const [users, setUsers] = useState<iUser[]>([]);
@@ -17,17 +17,16 @@ export const Dashboard = () => {
   }, [user]);
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await api.get("/users");
-      const users = response.data.filter((user: iUser) => !user.admin);
+      const users = await getUsers().then((users) =>
+        users.filter((user: iUser) => !user.admin)
+      );
       setUsers(users);
     };
 
     fetchUsers();
   }, []);
 
-  const handleLogOut = () => {
-    setUser({} as iUser);
-  };
+  const handleLogOut = () => setUser({} as iUser);
 
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>

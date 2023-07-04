@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
-import { api } from "@/config/api";
 import { Header, PasswordInput } from "@/components";
+import { deleteUser, login, updateUser } from "@/utils/user";
 
 export const Home = () => {
   const { user, setUser } = useContext(UserContext);
@@ -19,33 +19,20 @@ export const Home = () => {
     else if (user.name && user.admin) navigate("/dashboard");
   }, [user]);
 
-  const handleLogOut = () => {
-    setUser({} as iUser);
-  };
+  const handleLogOut = () => setUser({} as iUser);
   const handleUpdate = async () => {
-    const response = await api.put(`/users/${user.id}`, {
-      name: username,
-      email,
-      password,
-    });
-
-    if (response.data) {
-      const response = await api.post("/users/login", {
-        email,
-        password,
-        admin: false,
-      });
-      setUser(response.data);
+    const response = await updateUser(user.id, username, email, password);
+    if (response) {
+      const user = await login(email, password, false);
+      setUser(user);
       alert("Dados atualizados com sucesso!");
-    } else {
-      alert("Sinto muito, ocorreu um erro!");
-    }
+    } else alert("Sinto muito, ocorreu um erro!");
   };
   const handleDelete = async () => {
     if (!confirm("Essa ação é irreversível, tem certeza que deseja continuar?"))
       return;
-    const response = await api.delete(`/users/${user.id}`);
-    if (response.data) {
+    const response = await deleteUser(user.id);
+    if (response) {
       alert("Usuário excluido com sucesso");
       setUser({} as iUser);
       navigate("/");

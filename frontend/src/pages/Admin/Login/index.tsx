@@ -3,9 +3,9 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
-import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
 import { PasswordInput } from "@/components";
+import { login } from "@/utils/user";
 
 export const LoginAdmin = () => {
   const [email, setEmail] = useState("");
@@ -20,15 +20,11 @@ export const LoginAdmin = () => {
 
   const handleLogin = async () => {
     if (email === "" || password === "") return;
-    const response = await api.post("/users/login", {
-      email,
-      password,
-      admin: true,
-    });
-    if (response.data === "") {
+    const user = await login(email, password, true);
+    if (user === "")
       alert("Usuário não encontrado. Por favor confira seus dados.");
-    } else {
-      setUser(response.data);
+    else {
+      setUser(user);
       navigate("/dashboard");
     }
   };
