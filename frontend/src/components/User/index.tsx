@@ -1,4 +1,6 @@
-import { Box, Button, Typography } from "@mui/material";
+import { UserContext } from "@/contexts/user";
+import { Box, Button, Typography, popoverClasses } from "@mui/material";
+import { useContext } from "react";
 
 interface UserProps {
   id: number;
@@ -7,7 +9,10 @@ interface UserProps {
 }
 
 export const User = ({ id, name, email }: UserProps) => {
-  const handleRemove = () => {};
+  const { popAdmin } = useContext(UserContext);
+  const handleRemove = () => {
+    popAdmin(id);
+  };
 
   return (
     <Box

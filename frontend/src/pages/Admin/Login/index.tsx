@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -12,11 +12,21 @@ import { Link } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { UserContext } from "@/contexts/user";
+import { useToast } from "@/hooks/useToast";
+import { validatePassword } from "@/utils/validation";
+import { userLogin } from "@/config/types";
 
 export const LoginAdmin = () => {
+  const { login, setAuth } = useContext(UserContext);
+  const { handleToastError } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    setAuth(false);
+  }, []);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -24,7 +34,24 @@ export const LoginAdmin = () => {
   ) => {
     event.preventDefault();
   };
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    if (email.trim() === "" || password.trim() === "") {
+      handleToastError("Nenhum campo vazio.");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      handleToastError("A senha deve ter no mínimo 8 caracteres.");
+      return;
+    }
+
+    const newUser: userLogin = {
+      email: email,
+      password: password,
+      admin: 1
+    }
+    login(newUser);
+  };
 
   return (
     <Box

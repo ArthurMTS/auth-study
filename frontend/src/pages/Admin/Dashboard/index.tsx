@@ -1,15 +1,25 @@
 import { Box, Button, Typography } from "@mui/material";
 
 import { User } from "@/components";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "@/contexts/user";
+import { iUser } from "@/config/types";
 
 export const Dashboard = () => {
-  const handleLogOut = () => {};
+  const { user, logout, listUser, users } = useContext(UserContext);
+  const handleLogOut = () => {
+    logout();
+  };
+
+  useEffect(() => {
+    listUser();
+  }, []);
 
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography sx={{ fontSize: 26 }}>
-          Painel de Admin, nome-admin
+          Painel de Admin, {user.name}
         </Typography>
         <Button
           sx={{ background: "#eb2142", color: "#fff" }}
@@ -22,9 +32,9 @@ export const Dashboard = () => {
       <Box
         sx={{ marginTop: 5, display: "flex", flexDirection: "column", gap: 2 }}
       >
-        <User id={0} name="Nome do usuário 1" email="user1@mail.com" />
-        <User id={1} name="Nome do usuário 2" email="user2@mail.com" />
-        <User id={2} name="Nome do usuário 3" email="user3@mail.com" />
+        {users.map((element) => (
+          <User id={element.id} name={element.name} email={element.email} />
+        ))}
       </Box>
     </Box>
   );

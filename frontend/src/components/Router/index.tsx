@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import {
   Dashboard,
@@ -9,18 +9,31 @@ import {
   SigninAdmin,
   SigninUser,
 } from "@/pages";
+import { PrivateRouter } from "../PrivateRouter";
 
 export const Router = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={PageRoutes.login} element={<LoginUser />} />
-        <Route path={PageRoutes.signin} element={<SigninUser />} />
-        <Route path={PageRoutes.home} element={<Home />} />
-        <Route path={PageRoutes.loginAdmin} element={<LoginAdmin />} />
-        <Route path={PageRoutes.signinAdmin} element={<SigninAdmin />} />
-        <Route path={PageRoutes.dashboard} element={<Dashboard />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path={PageRoutes.login} element={<LoginUser />} />
+      <Route path={PageRoutes.signin} element={<SigninUser />} />
+      <Route path={PageRoutes.loginAdmin} element={<LoginAdmin />} />
+      <Route path={PageRoutes.signinAdmin} element={<SigninAdmin />} />
+      <Route
+        path={PageRoutes.home}
+        element={
+          <PrivateRouter>
+            <Home />
+          </PrivateRouter>
+        }
+      />
+      <Route
+        path={PageRoutes.dashboard}
+        element={
+          <PrivateRouter>
+            <Dashboard />
+          </PrivateRouter>
+        }
+      />
+    </Routes>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -8,12 +8,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { PageRoutes } from "@/pages";
+import { UserContext } from "@/contexts/user";
+import { useToast } from "@/hooks/useToast";
+import { validateEmail, validatePassword, validatePasswordConfirmation } from "@/utils/validation";
+import { createUser } from "@/config/types";
 
 export const SigninAdmin = () => {
+  const { signin, setAuth } = useContext(UserContext);
+  const { handleToastError } = useToast();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +42,37 @@ export const SigninAdmin = () => {
   ) => {
     event.preventDefault();
   };
-  const handleSignin = () => {};
+
+  useEffect(() => {
+    setAuth(false);
+  }, []);
+
+  const handleSignin = () => {
+    if (!validatePassword(password)) {
+      handleToastError("A senha deve ter no mínimo 8 caracteres.");
+      return;
+    }
+  
+    if (!validatePasswordConfirmation(password, passwordConfirmation)) {
+      handleToastError("A senha e a confirmação de senha não são iguais.");
+      return;
+    }
+  
+    if (!validateEmail(email)) {
+      handleToastError("O email fornecido não é válido.");
+      return;
+    }
+
+    const newUser: createUser = {
+      name: username,
+      admin: 1,
+      email: email,
+      password: password,
+    };
+
+    signin(newUser);
+    navigate("/admin");
+  };
 
   return (
     <Box

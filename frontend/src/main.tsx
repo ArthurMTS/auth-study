@@ -2,12 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { Router } from "@/components";
-import { UserProvider } from "@/contexts/user";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { UserProvider } from "./contexts/user";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <UserProvider>
-      <Router />
-    </UserProvider>
+      <BrowserRouter>
+        <UserProvider>
+          <Router />
+          <ToastContainer />
+        </UserProvider>
+      </BrowserRouter>
   </React.StrictMode>
 );
