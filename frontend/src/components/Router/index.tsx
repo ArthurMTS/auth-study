@@ -10,8 +10,12 @@ import {
   SigninUser,
 } from "@/pages";
 import { PrivateRouter } from "../PrivateRouter";
+import { useContext } from "react";
+import { UserContext } from "@/contexts/user";
 
 export const Router = () => {
+  const { user } = useContext(UserContext);
+  
   return (
     <Routes>
       <Route path={PageRoutes.login} element={<LoginUser />} />
@@ -21,16 +25,16 @@ export const Router = () => {
       <Route
         path={PageRoutes.home}
         element={
-          <PrivateRouter>
-            <Home />
+          <PrivateRouter admin={0}>
+            {user.admin === 0 ? <Home /> : <></>}
           </PrivateRouter>
         }
       />
       <Route
         path={PageRoutes.dashboard}
         element={
-          <PrivateRouter>
-            <Dashboard />
+          <PrivateRouter admin={1}>
+            {user.admin ? <Dashboard /> : <></>}
           </PrivateRouter>
         }
       />
