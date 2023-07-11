@@ -1,20 +1,50 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { UserContext } from "@/contexts/user";
+import { useNavigate } from "react-router-dom";
+import { iUser } from "@/config/types";
+import { api } from "@/config/api";
 
 export const Home = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const handleUpdate = () => {};
-  const handleLogOut = () => {};
-  const handleDelete = () => {};
+  //TODO No use effect pegar user do context. If false redirect para login
+  useEffect(() => {
+    if (!user.email || user.admin) {
+      navigate("/");
+    } else {
+      setUsername(user.name);
+      setEmail(user.email);
+    }
+  }, []);
+
+  const handleUpdate = async () => {
+    await api.put(`/users/${user.id}`, {
+      email: email,
+      password: password,
+      name: username,
+      admin: user.admin,
+    });
+    handleLogOut();
+  };
+  const handleLogOut = () => {
+    setUser({} as iUser);
+    navigate("/");
+  };
+  const handleDelete = async () => {
+    await api.delete(`/users/${user.id}`);
+    handleLogOut();
+  };
 
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography sx={{ fontSize: 26 }}>Bem-vindo, visitante.</Typography>
+        <Typography sx={{ fontSize: 26 }}>Bem-vindo, {user.name}.</Typography>
         <Button
           sx={{ background: "#eb2142", color: "#fff" }}
           onClick={handleLogOut}
