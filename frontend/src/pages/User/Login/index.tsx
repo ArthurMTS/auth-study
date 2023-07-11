@@ -1,14 +1,40 @@
-import { useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
+import { api } from "@/config/api";
+import { UserContext } from "@/contexts/user";
 
 export const LoginUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {};
+  const { setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.email) {
+      if (user.admin) navigate("/dashboard");
+      else navigate("/home");
+    }
+  }, [user]);
+
+  const handleLogin = async () => {
+    const data = await api
+      .post("/users/login", {
+        email,
+        password,
+        admin: false,
+      })
+      .then((response) => response.data);
+    if (data) {
+      delete data.password;
+      setUser(data);
+      navigate("/home");
+    } else alert("Usuário não encontrado");
+  };
 
   return (
     <Box
