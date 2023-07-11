@@ -1,14 +1,38 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
+import { api } from "@/config/api";
+import { UserContext } from "@/contexts/user";
 
 export const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const handleLogin = () => {};
+  useEffect(() => {
+    if (user.email) {
+      if (user.admin) navigate("/dashboard");
+      else navigate("/home");
+    }
+  }, [user]);
+
+  const handleLogin = async () => {
+    const data = await api
+      .post("/users/login", {
+        email,
+        password,
+        admin: true,
+      })
+      .then((response) => response.data);
+    if (data) {
+      delete data.password;
+      setUser(data);
+      navigate("/dashboard");
+    } else alert("Usuário não encontrado");
+  };
 
   return (
     <Box
@@ -22,7 +46,7 @@ export const LoginAdmin = () => {
         gap: 5,
       }}
     >
-      <Typography sx={{ fontSize: 26, textAlign: "center", }}>
+      <Typography sx={{ fontSize: 26, textAlign: "center" }}>
         Entre ou crie uma nova conta de administrador
       </Typography>
 
