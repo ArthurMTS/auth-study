@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
+import { api } from "@/config/api";
+import { UserContext } from "@/contexts/user";
 
 export const SigninAdmin = () => {
   const [username, setUsername] = useState("");
@@ -10,7 +12,24 @@ export const SigninAdmin = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  const handleSignin = () => {};
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.email) {
+      if (user.admin) navigate("/dashboard");
+      else navigate("/home");
+    }
+  }, []);
+
+  const handleSignin = () => {
+    api.post("/users", {
+      name: username,
+      admin: true,
+      email,
+      password,
+    });
+  };
 
   return (
     <Box
