@@ -1,13 +1,22 @@
+import { api } from "@/config/api";
 import { Box, Button, Typography } from "@mui/material";
 
 interface UserProps {
   id: number;
   name: string;
   email: string;
+  remove: (id: number) => void;
 }
 
-export const User = ({ id, name, email }: UserProps) => {
-  const handleRemove = () => {};
+export const User = ({ id, name, email, remove }: UserProps) => {
+  const handleRemove = () => {
+    const result = confirm(
+      `Realmente quer excluir o usuário ${name}!\nClique OK ou Cancel.`
+    );
+    if (result) {
+      remove(id);
+    }
+  };
 
   return (
     <Box
