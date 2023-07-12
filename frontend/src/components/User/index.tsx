@@ -1,6 +1,7 @@
 import { UserContext } from "@/contexts/user";
-import { Box, Button, Typography, popoverClasses } from "@mui/material";
-import { useContext } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { useContext, useState } from "react";
+import { ConfirmationPopup } from "../ConfirmPopup";
 
 interface UserProps {
   id: number;
@@ -10,7 +11,18 @@ interface UserProps {
 
 export const User = ({ id, name, email }: UserProps) => {
   const { popAdmin } = useContext(UserContext);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
   const handleRemove = () => {
+    setShowConfirmation(true);
+  };
+
+  const onClickButtonCancel = () => {
+    setShowConfirmation(false);
+  };
+
+  const onClickButtonConfirm = () => {
+    setShowConfirmation(false);
     popAdmin(id);
   };
 
@@ -32,6 +44,14 @@ export const User = ({ id, name, email }: UserProps) => {
       >
         Remover
       </Button>
+      <Box>
+          <ConfirmationPopup
+            message="Tem certeza que deseja excluir esse usuário?"
+            open={showConfirmation}
+            onConfirm={onClickButtonConfirm}
+            onCancel={onClickButtonCancel}
+          />
+      </Box>
     </Box>
   );
 };

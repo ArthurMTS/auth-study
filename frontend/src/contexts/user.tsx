@@ -99,7 +99,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   
         if (response.status === 200) {
           const newUsers = users.filter((user: iUser) => user.id !== id);
-          console.log(newUsers);
+          setUsers(newUsers);
           handleToastSucess("Usuário deletado com sucesso!");
         }
       } catch (error) {

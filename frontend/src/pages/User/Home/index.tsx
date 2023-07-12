@@ -13,6 +13,7 @@ import { UserContext } from "@/contexts/user";
 import { useToast } from "@/hooks/useToast";
 import { validateEmail, validatePassword } from "@/utils/validation";
 import { updateUser } from "@/config/types";
+import { ConfirmationPopup } from "@/components/ConfirmPopup";
 
 export const Home = () => {
   const { popUser, logout, user, update } = useContext(UserContext);
@@ -21,6 +22,16 @@ export const Home = () => {
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState(user.password);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const onClickButtonCancel = () => {
+    setShowConfirmation(false);
+  };
+
+  const onClickButtonConfirm = () => {
+    setShowConfirmation(false);
+    popUser();
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -59,7 +70,7 @@ export const Home = () => {
   };
 
   const handleDelete = () => {
-    popUser();
+    setShowConfirmation(true);
   };
 
   return (
@@ -117,6 +128,14 @@ export const Home = () => {
         >
           Excluir Usuário
         </Button>
+        <Box>
+          <ConfirmationPopup
+            message="Tem certeza que deseja excluir esse usuário?"
+            open={showConfirmation}
+            onConfirm={onClickButtonConfirm}
+            onCancel={onClickButtonCancel}
+          />
+        </Box>
       </Box>
     </Box>
   );

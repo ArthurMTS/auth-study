@@ -3,7 +3,6 @@ import { Box, Button, Typography } from "@mui/material";
 import { User } from "@/components";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/contexts/user";
-import { iUser } from "@/config/types";
 
 export const Dashboard = () => {
   const { user, logout, listUser, users } = useContext(UserContext);

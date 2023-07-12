@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import {
   Dashboard,
@@ -14,19 +14,55 @@ import { useContext } from "react";
 import { UserContext } from "@/contexts/user";
 
 export const Router = () => {
-  const { user } = useContext(UserContext);
-  
+  const { auth, user } = useContext(UserContext);
+
   return (
     <Routes>
-      <Route path={PageRoutes.login} element={<LoginUser />} />
-      <Route path={PageRoutes.signin} element={<SigninUser />} />
-      <Route path={PageRoutes.loginAdmin} element={<LoginAdmin />} />
-      <Route path={PageRoutes.signinAdmin} element={<SigninAdmin />} />
+      <Route
+        path={PageRoutes.login}
+        element={
+          auth && user.admin === 0 ? (
+            <Navigate to="/home" replace />
+          ) : (
+            <LoginUser />
+          )
+        }
+      />
+      <Route
+        path={PageRoutes.signin}
+        element={
+          auth && user.admin === 0 ? (
+            <Navigate to="/home" replace />
+          ) : (
+            <SigninUser />
+          )
+        }
+      />
+      <Route
+        path={PageRoutes.loginAdmin}
+        element={
+          auth && user.admin === 1 ? (
+            <Navigate to="/dashboard" replace />
+          ) : (
+            <LoginAdmin />
+          )
+        }
+      />
+      <Route
+        path={PageRoutes.signinAdmin}
+        element={
+          auth && user.admin === 1 ? (
+            <Navigate to="/dashboard" replace />
+          ) : (
+            <SigninAdmin />
+          )
+        }
+      />
       <Route
         path={PageRoutes.home}
         element={
           <PrivateRouter admin={0}>
-            {user.admin === 0 ? <Home /> : <></>}
+            <Home />
           </PrivateRouter>
         }
       />
@@ -34,7 +70,7 @@ export const Router = () => {
         path={PageRoutes.dashboard}
         element={
           <PrivateRouter admin={1}>
-            {user.admin ? <Dashboard /> : <></>}
+            <Dashboard />
           </PrivateRouter>
         }
       />

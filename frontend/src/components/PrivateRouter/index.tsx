@@ -11,11 +11,11 @@ export const PrivateRouter: React.FC<PrivateRouterProps> = ({ children, admin })
   const { auth } = useContext(UserContext);
 
   if(!auth) {
-    if(admin === 1) {
-      return <Navigate to="/admin" replace />;
-    }
-    else if(admin === 0) {
+    if(admin === 0) {
       return <Navigate to="/" replace />;
+    }
+    else if(admin === 1) {
+      return <Navigate to="/admin" replace />;
     }
   }
 
