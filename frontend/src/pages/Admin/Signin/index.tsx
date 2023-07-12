@@ -3,15 +3,45 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
+import { iUser } from "@/config/types";
 
 export const SigninAdmin = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [newAdmin, setNewAdmin] = useState<iUser>({ name: "", admin: true, email: "", password: ""});
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  const handleSignin = () => {};
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = event.target;
+    setNewAdmin((prevUser) => ({...prevUser, [name]: value}))
+  };
 
+  const handleSignin = async () => {
+    console.log("dados no new admin:", newAdmin)
+    if (newAdmin.password !== passwordConfirmation) {
+      console.error('A senha e a confirmação de senha não correspondem');
+      alert('A senha e a confirmação de senha não correspondem');
+
+      return;
+    } else {
+        try {
+          const response = await fetch("http://localhost:5000/users", {
+            method: 'POST', 
+            headers: {
+              'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify(newAdmin),
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+          } else {
+            console.error("erro de cadastro")
+          }
+        } catch(error) {
+          console.log("Erro", error);
+        };
+        console.log("handle sign in");
+    }
+  };
   return (
     <Box
       sx={{
@@ -31,20 +61,23 @@ export const SigninAdmin = () => {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <TextField
           type="text"
-          onChange={(event) => setUsername(event.target.value)}
-          value={username}
+          name="name"
+          onChange={handleInputChange}
+          value={newAdmin.name}
           placeholder="informe seu nome"
         />
         <TextField
           type="email"
-          onChange={(event) => setEmail(event.target.value)}
-          value={email}
+          name="email"
+          onChange={handleInputChange}
+          value={newAdmin.email}
           placeholder="informe seu email"
         />
         <TextField
           type="password"
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
+          name="password"
+          onChange={handleInputChange}
+          value={newAdmin.password}
           placeholder="informe sua senha"
         />
         <TextField
