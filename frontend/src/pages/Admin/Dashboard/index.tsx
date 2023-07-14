@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 
 import { User } from "@/components";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/user";
 
 export const Dashboard = () => {

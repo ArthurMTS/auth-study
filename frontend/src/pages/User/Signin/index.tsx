@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { PageRoutes } from "@/pages";
@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/useToast";
 import { createUser } from "@/config/types";
 
 export const SigninUser = () => {
-  const { signin, setAuth } = useContext(UserContext);
+  const { signin, setAuth, auth, user, users, listUser } = useContext(UserContext);
   const { handleToastError } = useToast();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -45,9 +45,18 @@ export const SigninUser = () => {
 
   useEffect(() => {
     setAuth(false);
+    listUser();
   }, []);
 
   const handleSignin = () => {
+    console.log(users);
+    const isEmailRegistered = users.some(item => item.email === email);
+
+    if(isEmailRegistered) {
+      handleToastError("Email já cadastrado.");
+      return;
+    }
+
     if (!validatePassword(password)) {
       handleToastError("A senha deve ter no mínimo 8 caracteres.");
       return;
@@ -73,6 +82,10 @@ export const SigninUser = () => {
     signin(newUser);
     navigate("/");
   };
+
+  if(auth === true && user.admin === 0) {
+    return <Navigate to="/home" />
+  }
 
   return (
     <Box

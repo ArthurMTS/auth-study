@@ -18,6 +18,7 @@ interface iUserContext {
   auth: boolean;
   setAuth: React.Dispatch<React.SetStateAction<boolean>>;
   users: iUser[];
+  admins: iUser[];
 }
 
 interface UserProviderProps {
@@ -29,6 +30,7 @@ export const UserContext = createContext({} as iUserContext);
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<iUser>({} as iUser);
   const [users, setUsers] = useState<iUser[]>([]);
+  const [admins, setAdmins] = useState<iUser[]>([]);
   const [auth, setAuth] = useState(false);
   const { handleToastSucess, handleToastError } = useToast();
   const navigate = useNavigate();
@@ -147,8 +149,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       const response = await api.get("/users");
 
       if (response.status === 200) {
-        const result = response.data.filter((user: iUser) => user.admin === 0);
-        setUsers(result);
+        const resultUser = response.data.filter((user: iUser) => user.admin === 0);
+        const resultAdmin = response.data.filter((user: iUser) => user.admin === 1);
+        setUsers(resultUser);
+        setAdmins(resultAdmin);
+        console.log(users, admins);
       }
     } catch (error) {
       console.error("Erro ao listar os usuários:", error);
@@ -157,7 +162,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, signin, login, update, popUser, popAdmin, logout, auth, setAuth, listUser, users }}>
+    <UserContext.Provider value={{ user, setUser, signin, login, update, popUser, popAdmin, logout, auth, setAuth, listUser, users, admins }}>
       {children}
     </UserContext.Provider>
   );

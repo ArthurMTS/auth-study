@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -18,7 +18,7 @@ import { validatePassword } from "@/utils/validation";
 import { userLogin } from "@/config/types";
 
 export const LoginAdmin = () => {
-  const { login, setAuth } = useContext(UserContext);
+  const { login, setAuth, auth, user } = useContext(UserContext);
   const { handleToastError } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,6 +52,10 @@ export const LoginAdmin = () => {
     }
     login(newUser);
   };
+
+  if(auth === true && user.admin === 1) {
+    return <Navigate to="/dashboard" />
+  }
 
   return (
     <Box
