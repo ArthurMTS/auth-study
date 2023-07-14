@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import {
   Dashboard,
@@ -9,53 +9,33 @@ import {
   SigninAdmin,
   SigninUser,
 } from "@/pages";
-import { PrivateRouter } from "../PrivateRouter";
-import { useContext } from "react";
-import { UserContext } from "@/contexts/user";
+import { PrivateRouter } from "@/components/PrivateRouter";
 
 export const Router = () => {
-  const { auth, user } = useContext(UserContext);
-
   return (
     <Routes>
       <Route
         path={PageRoutes.login}
         element={
-          auth && user.admin === 0 ? (
-            <Navigate to="/home" replace />
-          ) : (
-            <LoginUser />
-          )
+          <LoginUser />
         }
       />
       <Route
         path={PageRoutes.signin}
         element={
-          auth && user.admin === 0 ? (
-            <Navigate to="/home" replace />
-          ) : (
-            <SigninUser />
-          )
+          <SigninUser />
         }
       />
       <Route
         path={PageRoutes.loginAdmin}
         element={
-          auth && user.admin === 1 ? (
-            <Navigate to="/dashboard" replace />
-          ) : (
-            <LoginAdmin />
-          )
+          <LoginAdmin />
         }
       />
       <Route
         path={PageRoutes.signinAdmin}
         element={
-          auth && user.admin === 1 ? (
-            <Navigate to="/dashboard" replace />
-          ) : (
-            <SigninAdmin />
-          )
+          <SigninAdmin />
         }
       />
       <Route

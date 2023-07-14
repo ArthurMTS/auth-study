@@ -18,7 +18,7 @@ import { validateEmail, validatePassword, validatePasswordConfirmation } from "@
 import { createUser } from "@/config/types";
 
 export const SigninAdmin = () => {
-  const { signin, setAuth, auth, user, admins, listUser } = useContext(UserContext);
+  const { signin, auth, user, admins, listUser } = useContext(UserContext);
   const { handleToastError } = useToast();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -44,7 +44,6 @@ export const SigninAdmin = () => {
   };
 
   useEffect(() => {
-    setAuth(false);
     listUser();
   }, []);
 

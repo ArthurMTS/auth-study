@@ -28,10 +28,21 @@ interface UserProviderProps {
 export const UserContext = createContext({} as iUserContext);
 
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<iUser>({} as iUser);
+  const userString = localStorage.getItem("user");
+  const authString = localStorage.getItem("auth");
+  let userArray: iUser;
+  let authBoolean: boolean;
+
+  if (userString !== null) userArray = JSON.parse(userString);
+  else userArray = {} as iUser;
+
+  if (authString !== null) authBoolean = JSON.parse(authString);
+  else authBoolean = false;
+
+  const [user, setUser] = useState<iUser>(userArray);
   const [users, setUsers] = useState<iUser[]>([]);
   const [admins, setAdmins] = useState<iUser[]>([]);
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(authBoolean);
   const { handleToastSucess, handleToastError } = useToast();
   const navigate = useNavigate();
 
@@ -55,11 +66,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       if (response.status === 200) {
         if(response.data === "") {
           setUser({} as iUser);
+          localStorage.setItem("user", JSON.stringify(user));
           setAuth(false);
+          localStorage.setItem("auth", JSON.stringify(auth));
           handleToastError("Usuário incorreto.");
         } else {
           setUser(response.data);
+          localStorage.setItem("user", JSON.stringify(user));
           setAuth(true);
+          localStorage.setItem("auth", JSON.stringify(auth));
           handleToastSucess("Usuário logado com sucesso!");
           if(response.data.admin === 1) navigate("/dashboard");
           if(response.data.admin === 0) navigate("/home");
@@ -79,7 +94,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         if (response.status === 200) {
           const auxAdmin = user.admin;
           setUser({} as iUser);
+          localStorage.setItem("user", JSON.stringify(user));
           setAuth(false);
+          localStorage.setItem("auth", JSON.stringify(auth));
           handleToastSucess("Usuário deletado com sucesso!");
           if(auxAdmin === 1) navigate("/admin");
           if(auxAdmin === 0) navigate("/");
@@ -118,9 +135,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     if(user.id) {
       const auxAdmin = user.admin;
       setUser({} as iUser);
+      localStorage.setItem("user", JSON.stringify(user));
       setAuth(false);
+      localStorage.setItem("auth", JSON.stringify(auth));
       handleToastSucess("Usuário deslogado com sucesso!");
-      console.log(auxAdmin);
       if(auxAdmin === 1) navigate("/admin");
       if(auxAdmin === 0) navigate("/");
     }
@@ -136,6 +154,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           ...data
         }
         setUser(newData);
+        localStorage.setItem("user", JSON.stringify(user));
         handleToastSucess("Usuário atualizado com sucesso!");
       }
     } catch (error) {
@@ -152,8 +171,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         const resultUser = response.data.filter((user: iUser) => user.admin === 0);
         const resultAdmin = response.data.filter((user: iUser) => user.admin === 1);
         setUsers(resultUser);
+        localStorage.setItem("user", JSON.stringify(user));
         setAdmins(resultAdmin);
-        console.log(users, admins);
       }
     } catch (error) {
       console.error("Erro ao listar os usuários:", error);

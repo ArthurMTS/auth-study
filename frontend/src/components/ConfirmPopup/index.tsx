@@ -17,13 +17,13 @@ export const ConfirmationPopup: React.FC<ConfirmationPopupProps> = ({
 }) => {
 
   return (
-    <Drawer className="" anchor="bottom" open={open}>
-      <div className="">
-        <div className="">
+    <Drawer anchor="bottom" open={open}>
+      <div>
+        <div>
           <h2>{message}</h2>
-          <div className="">
-            <button className="" onClick={onConfirm}><Check/></button>
-            <button className="" onClick={onCancel}><Clear/></button>
+          <div>
+            <button onClick={onConfirm}><Check/></button>
+            <button onClick={onCancel}><Clear/></button>
           </div>
         </div>
       </div>

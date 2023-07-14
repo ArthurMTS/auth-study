@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/useToast";
 import { createUser } from "@/config/types";
 
 export const SigninUser = () => {
-  const { signin, setAuth, auth, user, users, listUser } = useContext(UserContext);
+  const { signin, auth, user, users, listUser } = useContext(UserContext);
   const { handleToastError } = useToast();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -44,7 +44,6 @@ export const SigninUser = () => {
   };
 
   useEffect(() => {
-    setAuth(false);
     listUser();
   }, []);
 

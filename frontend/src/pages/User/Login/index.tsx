@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -18,15 +18,11 @@ import { validatePassword } from "@/utils/validation";
 import { userLogin } from "@/config/types";
 
 export const LoginUser = () => {
-  const { login, setAuth, auth, user } = useContext(UserContext);
+  const { login, auth, user } = useContext(UserContext);
   const { handleToastError } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    setAuth(false);
-  }, []);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
