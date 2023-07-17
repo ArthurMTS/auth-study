@@ -1,15 +1,42 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
+import { UserContext } from "@/contexts/user";
+import { iUser } from "@/config/types";
 
 export const LoginAdmin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {setUser} = useContext(UserContext);
+  const [loggedInUser, setLoggedInUser] = useState<iUser>({email: "", password: "", admin: true, name: "" });
+  
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setLoggedInUser((prevUser) => ({ ...prevUser, [name]: value }));
+  };
 
-  const handleLogin = () => {};
-
+  const handleLogin = async () => {
+    try {
+      const response = fetch("http://localhost:5000/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loggedInUser),
+      }).then((response) => response.json())
+      .then((loggedInUser) => {
+        if (loggedInUser) 
+          alert("Olá,"+loggedInUser.name+"! Como vai?"); 
+        setUser(loggedInUser);
+        console.log("usuario: ", loggedInUser)
+      });
+  
+    } catch (error) {
+      console.error("Erro:", error);
+    }
+      // Limpar os dados do usuário após o login
+      // setUser({ email: "", password: "" });
+  };
   return (
     <Box
       sx={{
@@ -29,14 +56,16 @@ export const LoginAdmin = () => {
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <TextField
           type="email"
-          onChange={(event) => setEmail(event.target.value)}
-          value={email}
+          name="email"
+          onChange={handleInputChange}
+          value={loggedInUser.email}
           placeholder="informe seu email"
         />
         <TextField
           type="password"
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
+          name="password"
+          onChange={handleInputChange}
+          value={loggedInUser.password}
           placeholder="informe sua senha"
         />
         <Button onClick={handleLogin}>Log IN</Button>
