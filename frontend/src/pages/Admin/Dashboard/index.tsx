@@ -5,18 +5,18 @@ import { UserContext } from "@/contexts/user";
 import { User } from "@/components";
 
 export const Dashboard = () => {
-  const {setLoggedAdmin, loggedAdmin} = useContext(UserContext)
+  const {setLoggedAdmin, loggedAdmin, user} = useContext(UserContext)
   const [acessed, setAcessed] = useState(0);
-  
+
   const handleLogOut = () => {
     setAcessed(1);
     setLoggedAdmin(false);
   };
 
-  if(loggedAdmin==false) {
+  if(loggedAdmin==false || user.admin==false) {
     window.location.href = "/admin";
     if(acessed==0) {
-      alert("Faça seu Login para acessar essa tela!")
+      alert("Faça seu login de admin para acessar essa tela!")
     }
     return
   }

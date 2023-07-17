@@ -8,7 +8,7 @@ export const Home = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [acessed, setAcessed] = useState(0);
-  const {loggedUser, setLoggedUser} = useContext(UserContext);
+  const {loggedUser, setLoggedUser, user} = useContext(UserContext);
 
   const handleUpdate = () => {};
   const handleLogOut = () => {
@@ -17,10 +17,10 @@ export const Home = () => {
   };
   const handleDelete = () => {};
 
-  if(loggedUser==false){
+  if(loggedUser==false || user.admin==true){
     window.location.href = "/";
     if(acessed==0) {
-      alert("Faça seu Login para acessar essa tela!")
+      alert("Faça seu login de usuário para acessar essa tela!")
     }
     return
   }
