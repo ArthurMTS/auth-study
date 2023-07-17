@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
+import { iUser } from "@/config/types";
 
 export const SigninAdmin = () => {
   const [username, setUsername] = useState("");
@@ -22,13 +23,25 @@ export const SigninAdmin = () => {
     }
   }, []);
 
-  const handleSignin = () => {
-    api.post("/users", {
-      name: username,
-      admin: true,
-      email,
-      password,
-    });
+  const handleSignin = async () => {
+    const response = await api.get<iUser[]>("/users");
+
+    const exist = response.data.some(
+      (user) => user.admin && user.email === email && user.name === username
+    );
+
+    if (exist) {
+      alert("Já existe um usuário cadastrado com esse nome e email");
+    } else {
+      api.post("/users", {
+        name: username,
+        admin: true,
+        email,
+        password,
+      });
+
+      alert("Usuário administrador cadastrado");
+    }
   };
 
   return (
