@@ -7,12 +7,12 @@ import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
 
 export const LoginAdmin = () => {
-  const {setUser} = useContext(UserContext);
-  const [loggedInUser, setLoggedInUser] = useState<iUser>({email: "", password: "", admin: true, name: "" });
+  const {setUser, setLoggedAdmin} = useContext(UserContext);
+  const [loggedInAdmin, setLoggedInAdmin] = useState<iUser>({email: "", password: "", admin: true, name: "" });
   
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setLoggedInUser((prevUser) => ({ ...prevUser, [name]: value }));
+    setLoggedInAdmin((prevUser) => ({ ...prevUser, [name]: value }));
   };
 
   const handleLogin = async () => {
@@ -22,11 +22,14 @@ export const LoginAdmin = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(loggedInUser),
+        body: JSON.stringify(loggedInAdmin),
       }).then((response) => response.json())
       .then((loggedInUser) => {
-        if (loggedInUser) 
-          alert("Olá,"+loggedInUser.name+"! Como vai?"); 
+        if (loggedInUser) {
+          setLoggedAdmin(true);
+          alert("Olá, "+loggedInUser.name+"! Como vai?"); 
+          window.location.href = "/dashboard"
+        }
         setUser(loggedInUser);
         console.log("usuario: ", loggedInUser)
       });
@@ -58,14 +61,14 @@ export const LoginAdmin = () => {
           type="email"
           name="email"
           onChange={handleInputChange}
-          value={loggedInUser.email}
+          value={loggedInAdmin.email}
           placeholder="informe seu email"
         />
         <TextField
           type="password"
           name="password"
           onChange={handleInputChange}
-          value={loggedInUser.password}
+          value={loggedInAdmin.password}
           placeholder="informe sua senha"
         />
         <Button onClick={handleLogin}>Log IN</Button>

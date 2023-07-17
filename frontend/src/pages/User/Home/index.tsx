@@ -9,10 +9,8 @@ export const Home = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const {loggedUser, setLoggedUser} = useContext(UserContext);
 
-
   const handleUpdate = () => {};
   const handleLogOut = () => {
-    window.location.href = "/";
     setLoggedUser(false);
   };
   const handleDelete = () => {};
