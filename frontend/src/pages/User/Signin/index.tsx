@@ -5,11 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
+import { iUser } from "@/config/types";
 
 export const SigninUser = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -21,13 +24,40 @@ export const SigninUser = () => {
     }
   }, [user]);
 
-  const handleSignin = () => {
-    api.post("/users", {
-      name: username,
-      admin: false,
-      email,
-      password,
-    });
+  function isEmail(val: string) {
+    let regEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!regEmail.test(val)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  const handleSignin = async () => {
+    if (isEmail(email)) {
+      setEmailError("Valid Email :)");
+    } else {
+      setEmailError("Enter valid Email!");
+      alert("e-mail inválido!");
+    }
+    const response = await api.get<iUser[]>("/users");
+
+    const exist = response.data.some(
+      (user) => !user.admin && user.email === email && user.name === username
+    );
+
+    if (exist) {
+      alert("Já existe um usuário cadastrado com esses nome e email");
+    } else {
+      api.post("/users", {
+        name: username,
+        admin: false,
+        email,
+        password,
+      });
+
+      alert("Usuário cadastrado");
+    }
   };
 
   return (
