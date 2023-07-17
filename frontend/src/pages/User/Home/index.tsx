@@ -5,6 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { iUser } from "@/config/types";
 import { api } from "@/config/api";
 
+interface editParams {
+  email: string;
+  password?: string;
+  name: string;
+  admin: boolean;
+}
+
 export const Home = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -24,12 +31,18 @@ export const Home = () => {
   }, []);
 
   const handleUpdate = async () => {
-    await api.put(`/users/${user.id}`, {
+    const params: editParams = {
       email: email,
       password: password,
       name: username,
       admin: user.admin,
-    });
+    };
+
+    if (!params.password) {
+      delete params.password;
+    }
+    await api.put(`/users/${user.id}`, params);
+    alert("Dados atualizados com sucesso!");
     handleLogOut();
   };
   const handleLogOut = () => {
@@ -38,6 +51,7 @@ export const Home = () => {
   };
   const handleDelete = async () => {
     await api.delete(`/users/${user.id}`);
+    alert("Dados excluidos com sucesso!");
     handleLogOut();
   };
 
