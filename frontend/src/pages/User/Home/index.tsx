@@ -7,20 +7,24 @@ export const Home = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [acessed, setAcessed] = useState(0);
   const {loggedUser, setLoggedUser} = useContext(UserContext);
 
   const handleUpdate = () => {};
   const handleLogOut = () => {
+    setAcessed(1);
     setLoggedUser(false);
   };
   const handleDelete = () => {};
 
-  useEffect(() => {
-    if(loggedUser==false){
-      alert("Faça seu Login ou entre novamente para acessar essa tela!")
-      window.location.href = "/";
-    } 
-  })
+  if(loggedUser==false){
+    window.location.href = "/";
+    if(acessed==0) {
+      alert("Faça seu Login para acessar essa tela!")
+    }
+    return
+  }
+
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
