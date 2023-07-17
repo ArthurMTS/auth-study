@@ -6,15 +6,10 @@ import { PageRoutes } from "@/pages";
 import { iUser } from "@/config/types";
 import { UserContext } from "@/contexts/user";
 
-interface User {
-  email: string;
-  password: string;
-}
-
 export const LoginUser = () => {
-  const {setUser} = useContext(UserContext);
+  const {setUser, setLoggedUser, loggedUser} = useContext(UserContext);
   const [loggedInUser, setLoggedInUser] = useState<iUser>({email: "", password: "", admin: false, name: "" });
-  
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setLoggedInUser((prevUser) => ({ ...prevUser, [name]: value }));
@@ -30,8 +25,11 @@ export const LoginUser = () => {
         body: JSON.stringify(loggedInUser),
       }).then((response) => response.json())
       .then((loggedInUser) => {
-        if (loggedInUser) 
-          alert("Olá,"+loggedInUser.name+"! Como vai?"); 
+        if (loggedInUser) {
+          setLoggedUser(true);
+          alert("Olá,"+loggedInUser.name+"! É um prazer contar novamente com o seu acesso!"); 
+          window.location.href = "/home";
+        }
         setUser(loggedInUser);
         console.log("usuario: ", loggedInUser)
       });

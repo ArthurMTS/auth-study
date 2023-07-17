@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { UserContext } from "@/contexts/user";
 
 export const Home = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const {loggedUser, setLoggedUser} = useContext(UserContext);
+
 
   const handleUpdate = () => {};
   const handleLogOut = () => {
     window.location.href = "/";
+    setLoggedUser(false);
   };
   const handleDelete = () => {};
 
+  useEffect(() => {
+    if(loggedUser==false){
+      alert("Faça seu Login ou entre novamente para acessar essa tela!")
+      window.location.href = "/";
+    } 
+  })
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
