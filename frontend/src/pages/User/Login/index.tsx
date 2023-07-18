@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/user";
 
 export const LoginUser = () => {
   const {setUser, setLoggedUser, loggedUser} = useContext(UserContext);
-  const [loggedInUser, setLoggedInUser] = useState<iUser>({email: "", password: "", admin: false, name: "" });
+  const [loggedInUser, setLoggedInUser] = useState<iUser>({email: "", password: "", admin: false, name: ""});
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

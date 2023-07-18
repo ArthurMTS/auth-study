@@ -20,7 +20,6 @@ export const UserContext = createContext({} as iUserContext);
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useStorage<iUser>("user", {} as iUser);
-  // const [loggedUser, setLoggedUser] = useState(Boolean);
   const [loggedUser, setLoggedUser] = useStorage("logged", false);
   const [loggedAdmin, setLoggedAdmin] = useStorage("logged", false);
 

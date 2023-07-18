@@ -1,21 +1,46 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { UserContext } from "@/contexts/user";
+import { iUser } from "@/config/types";
 
 export const Home = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {loggedUser, setLoggedUser, user, setUser} = useContext(UserContext);
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [acessed, setAcessed] = useState(0);
-  const {loggedUser, setLoggedUser, user} = useContext(UserContext);
+  const [loggedInUser, setLoggedInUser] = useState<iUser>({email: user.email, password: user.password, admin: false, name: user.name});
 
-  const handleUpdate = () => {};
   const handleLogOut = () => {
     setAcessed(1);
     setLoggedUser(false);
   };
-  const handleDelete = () => {};
+
+  const handleDelete = () => {
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setLoggedInUser((prevUser) => ({ ...prevUser, [name]: value }));
+  }; 
+
+  const handleUpdate = () => {
+    try {
+      if(loggedInUser.password===passwordConfirmation){
+        const response = fetch(`http://localhost:5000/users/${user.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loggedInUser),
+        }).then((response) => response.json()).then((loggedInUser) => {
+          setUser(loggedInUser);
+          alert("Dados atualizados");
+        });
+        console.log(loggedInUser)
+      }
+  } catch (error) {
+    console.error("Erro:", error);
+  }
+}
 
   if(loggedUser==false || user.admin==true){
     window.location.href = "/";
@@ -39,27 +64,34 @@ export const Home = () => {
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <TextField
+          label="Name"
+          name="name"
           type="text"
-          onChange={(event) => setUsername(event.target.value)}
-          value={username}
+          onChange={handleInputChange}
+          value={loggedInUser.name}
           placeholder="informe seu nome"
         />
         <TextField
           type="email"
-          onChange={(event) => setEmail(event.target.value)}
-          value={email}
+          name="email"
+          label="Email"
+          onChange={handleInputChange}
+          value={loggedInUser.email}
           placeholder="informe seu email"
         />
         <TextField
           type="password"
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}
+          name="password"
+          label="Password"
+          onChange={handleInputChange}
+          value={loggedInUser.password}
           placeholder="informe sua senha"
         />
         <TextField
           type="password"
           onChange={(event) => setPasswordConfirmation(event.target.value)}
           value={passwordConfirmation}
+          label="Confirm Password"
           placeholder="confirme sua senha"
         />
         <Button
