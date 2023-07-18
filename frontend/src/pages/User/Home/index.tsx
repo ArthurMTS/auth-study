@@ -15,6 +15,21 @@ export const Home = () => {
   };
 
   const handleDelete = () => {
+    try {
+      if(loggedInUser.password===passwordConfirmation){
+        const response = fetch(`http://localhost:5000/users/${user.id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loggedInUser),
+        })
+        alert("usuário deletado");
+        setLoggedUser(false);
+      }
+  } catch (error) {
+    console.error("Erro:", error);
+  }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,10 +46,8 @@ export const Home = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(loggedInUser),
-        }).then((response) => response.json()).then((loggedInUser) => {
-          setUser(loggedInUser);
-          alert("Dados atualizados");
-        });
+        }).then((response) => response.json())
+        alert("Dados atualizados");
         console.log(loggedInUser)
       }
   } catch (error) {
