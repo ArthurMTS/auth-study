@@ -27,9 +27,9 @@ export const Home = () => {
         alert("usuário deletado");
         setLoggedUser(false);
       }
-  } catch (error) {
-    console.error("Erro:", error);
-  }
+    } catch (error) {
+      console.error("Erro:", error);
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
