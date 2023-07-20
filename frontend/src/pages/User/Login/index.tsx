@@ -27,7 +27,7 @@ export const LoginUser = () => {
       .then((loggedInUser) => {
         if (loggedInUser) {
           setLoggedUser(true);
-          alert("Olá,"+loggedInUser.name+"! É um prazer contar novamente com o seu acesso!"); 
+          alert("Olá, "+loggedInUser.name+"! É um prazer contar novamente com o seu acesso!"); 
           window.location.href = "/home";
         }
         setUser(loggedInUser);

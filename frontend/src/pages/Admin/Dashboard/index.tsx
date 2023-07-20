@@ -6,10 +6,8 @@ import { User } from "@/components";
 import { iUser } from "@/config/types";
 
 export const Dashboard = () => {
-  const {setLoggedAdmin, loggedAdmin, user} = useContext(UserContext)
+  const {setLoggedAdmin, loggedAdmin, user, getUsers, users} = useContext(UserContext)
   const [acessed, setAcessed] = useState(0);
-  const [deleteConfirm, setDeleteConfirm] = useState(false);
-  const [users, setUsers] = useState<iUser[]>();
 
   const handleLogOut = () => {
     setAcessed(1);
@@ -17,8 +15,7 @@ export const Dashboard = () => {
   };
 
   const handleDelete = (id:number | undefined) => {
-    setDeleteConfirm(confirm("deseja deletar o usuário?"));
-    if(deleteConfirm) {
+    if(confirm("deseja deletar o usuário?")) {
       try {
         const response = fetch(`http://localhost:5000/users/${id}`, {
           method: "DELETE",
@@ -26,10 +23,9 @@ export const Dashboard = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(user),
-        }).then((user) => {
-          alert("Deletado!");
-          window.location.reload();
         })
+        alert("Deletado!");
+        window.location.reload();
       } catch (error) {
         console.error("Erro:", error);
       }
@@ -44,18 +40,7 @@ export const Dashboard = () => {
     return
   }
 
-  try {
-    const response = fetch("http://localhost:5000/users/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(users),
-    }).then((response) => response.json())
-    .then((user) => setUsers(user))
-  } catch (error) {
-    console.error("Erro:", error);
-  }
+  getUsers();
 
   console.log("usuarios:", users)
 
