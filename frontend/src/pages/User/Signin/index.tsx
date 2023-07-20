@@ -1,16 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
 import { iUser } from "@/config/types";
-import { UserContext } from "@/contexts/user";
 
 export const SigninUser = () => {
   const [newUser, setNewUser] = useState<iUser>({ name: "", admin: false, email: "", password: ""});
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const {user} = useContext(UserContext);
-
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -18,8 +15,6 @@ export const SigninUser = () => {
   };
 
   const handleSignin = async () => {
-    console.log("dados no new user:", newUser)
-    console.log("dados no user:", user.lenght)
     if (newUser.password !== passwordConfirmation) {
       console.error('A senha e a confirmação de senha não correspondem');
       alert('A senha e a confirmação de senha não correspondem');

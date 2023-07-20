@@ -33,6 +33,7 @@ export const SigninAdmin = () => {
 
           if (response.ok) {
             const userData = await response.json();
+            alert("Cadastro realizado, faça seu login para ter mais acesso!")
           } else {
             console.error("erro de cadastro")
           }
