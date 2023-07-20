@@ -22,9 +22,8 @@ export const Home = () => {
 
   //TODO No use effect pegar user do context. If false redirect para login
   useEffect(() => {
-    if (!user.email || user.admin) {
-      navigate("/");
-    } else {
+    if (!user.email || user.admin) navigate("/");
+    else {
       setUsername(user.name);
       setEmail(user.email);
     }

@@ -13,11 +13,8 @@ export const Dashboard = () => {
 
   //TODO No use effect pegar user do context. If false redirect para login
   useEffect(() => {
-    if (!user.email || !user.admin) {
-      navigate("/admin");
-    } else {
-      loadUsers();
-    }
+    if (!user.email || !user.admin) navigate("/admin");
+    else loadUsers();
   }, [user]);
 
   const loadUsers = async () => {

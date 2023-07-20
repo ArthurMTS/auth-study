@@ -13,9 +13,7 @@ export const User = ({ id, name, email, remove }: UserProps) => {
     const result = confirm(
       `Realmente quer excluir o usuário ${name}!\nClique OK ou Cancel.`
     );
-    if (result) {
-      remove(id);
-    }
+    if (result) remove(id);
   };
 
   return (

@@ -26,17 +26,14 @@ export const SigninUser = () => {
 
   function isEmail(val: string) {
     let regEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!regEmail.test(val)) {
-      return false;
-    }
+    if (!regEmail.test(val)) return false;
 
     return true;
   }
 
   const handleSignin = async () => {
-    if (isEmail(email)) {
-      setEmailError("Valid Email :)");
-    } else {
+    if (isEmail(email)) setEmailError("Valid Email :)");
+    else {
       setEmailError("Enter valid Email!");
       alert("e-mail inválido!");
     }
