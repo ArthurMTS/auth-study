@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { iUser } from "@/config/types";
 import { api } from "@/config/api";
 
-interface editParams {
+interface userFields {
   email: string;
   password?: string;
   name: string;
@@ -29,7 +29,7 @@ export const Home = () => {
   }, []);
 
   const handleUpdate = async () => {
-    const params: editParams = {
+    const params: userFields = {
       email: email,
       password: password,
       name: username,
