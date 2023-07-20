@@ -20,7 +20,6 @@ export const Home = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  //TODO No use effect pegar user do context. If false redirect para login
   useEffect(() => {
     if (!user.email || user.admin) navigate("/");
     else {
