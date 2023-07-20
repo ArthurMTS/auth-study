@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { validateEmail } from "@/utils/validation";
 
 import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
@@ -24,15 +25,8 @@ export const SigninUser = () => {
     }
   }, [user]);
 
-  function isEmail(val: string) {
-    let regEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!regEmail.test(val)) return false;
-
-    return true;
-  }
-
   const handleSignin = async () => {
-    if (isEmail(email)) setEmailError("Valid Email :)");
+    if (validateEmail(email)) setEmailError("Valid Email :)");
     else {
       setEmailError("Enter valid Email!");
       alert("e-mail inválido!");
