@@ -8,14 +8,25 @@ import { iUser } from "@/config/types";
 export const SigninUser = () => {
   const [newUser, setNewUser] = useState<iUser>({ name: "", admin: false, email: "", password: ""});
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [validEmail, setValidEmail] = useState(true);
+  const [completedEmail, setCompletedEmail] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
+    
+    if(name === "email") {
+      const emailRegex = /^\w+@[a-z]+(\.[a-z]+)+$/;
+      setValidEmail(false);
+      if(emailRegex.test(value))  {
+        setValidEmail(true);
+        setCompletedEmail(true);
+      };
+    }
     setNewUser((prevUser) => ({...prevUser, [name]: value}))
   };
 
   const handleSignin = async () => {
-    if (newUser.password !== passwordConfirmation) {
+    if (newUser.password !== passwordConfirmation && !completedEmail) {
       console.error('A senha e a confirmação de senha não correspondem');
       alert('A senha e a confirmação de senha não correspondem');
       return;
@@ -68,6 +79,7 @@ export const SigninUser = () => {
           type="email"
           name="email"
           onChange={handleInputChange}
+          helperText={!validEmail ? "Insira um e-mail válido." : ""}
           value={newUser.email}
           placeholder="informe seu email"
         />
@@ -84,7 +96,7 @@ export const SigninUser = () => {
           value={passwordConfirmation}
           placeholder="confirme sua senha"
         />
-        <Button onClick={handleSignin}>Sign IN</Button>
+        <Button onClick={handleSignin} disabled={!validEmail}>Sign IN</Button>
       </Box>
       <Typography>
         Caso já tenha uma conta, basta <Link to={PageRoutes.login}>Logar</Link>.

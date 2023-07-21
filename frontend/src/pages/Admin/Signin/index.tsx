@@ -8,15 +8,26 @@ import { iUser } from "@/config/types";
 export const SigninAdmin = () => {
   const [newAdmin, setNewAdmin] = useState<iUser>({ name: "", admin: true, email: "", password: ""});
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [validEmail, setValidEmail] = useState(true);
+  const [completedEmail, setCompletedEmail] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
-    setNewAdmin((prevUser) => ({...prevUser, [name]: value}))
-  };
+    
+    if(name === "email") {
+      const emailRegex = /^\w+@[a-z]+(\.[a-z]+)+$/;
+      setValidEmail(false);
+      if(emailRegex.test(value))  {
+        setValidEmail(true);
+        setCompletedEmail(true);
+        console.log(validEmail);
+      };
+    }
+  }
 
   const handleSignin = async () => {
     console.log("dados no new admin:", newAdmin)
-    if (newAdmin.password !== passwordConfirmation) {
+    if (newAdmin.password !== passwordConfirmation && !completedEmail) {
       console.error('A senha e a confirmação de senha não correspondem');
       alert('A senha e a confirmação de senha não correspondem');
 
@@ -87,7 +98,7 @@ export const SigninAdmin = () => {
           value={passwordConfirmation}
           placeholder="confirme sua senha"
         />
-        <Button onClick={handleSignin}>Sign IN</Button>
+        <Button onClick={handleSignin} disabled={!validEmail}>Sign IN</Button>
       </Box>
       <Typography>
         Caso já tenha uma conta, basta{" "}

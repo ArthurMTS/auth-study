@@ -26,6 +26,8 @@ export const Home = () => {
         })
         alert("usuário deletado");
         setLoggedUser(false);
+      } else {
+        alert("Para excluir é necessario confirmar senha")
       }
     } catch (error) {
       console.error("Erro:", error);
@@ -66,7 +68,7 @@ export const Home = () => {
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography sx={{ fontSize: 26 }}>Bem-vindo, visitante.</Typography>
+        <Typography sx={{ fontSize: 26 }}>Bem-vindo, Visitante.</Typography>
         <Button
           sx={{ background: "#eb2142", color: "#fff" }}
           onClick={handleLogOut}
