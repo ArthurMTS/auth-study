@@ -27,6 +27,7 @@ export const SigninAdmin = () => {
         setCompletedEmail(true);
       }
     }
+    setNewAdmin(prevUser => ({ ...prevUser, [name]: value }));
   };
 
   const handleSignin = async () => {
