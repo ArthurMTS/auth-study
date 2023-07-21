@@ -4,10 +4,15 @@ import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
 
 export const Home = () => {
-  const {loggedUser, setLoggedUser, user, setUser} = useContext(UserContext);
+  const { loggedUser, setLoggedUser, user, setUser } = useContext(UserContext);
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [acessed, setAcessed] = useState(0);
-  const [loggedInUser, setLoggedInUser] = useState<iUser>({email: user.email, password: user.password, admin: false, name: user.name});
+  const [loggedInUser, setLoggedInUser] = useState<iUser>({
+    email: user.email,
+    password: user.password,
+    admin: false,
+    name: user.name,
+  });
 
   const handleLogOut = () => {
     setAcessed(1);
@@ -16,18 +21,18 @@ export const Home = () => {
 
   const handleDelete = () => {
     try {
-      if(loggedInUser.password===passwordConfirmation){
+      if (loggedInUser.password === passwordConfirmation) {
         const response = fetch(`http://localhost:5000/users/${user.id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(loggedInUser),
-        })
+        });
         alert("usuário deletado");
         setLoggedUser(false);
       } else {
-        alert("Para excluir é necessario confirmar senha")
+        alert("Para excluir é necessario confirmar senha");
       }
     } catch (error) {
       console.error("Erro:", error);
@@ -36,33 +41,33 @@ export const Home = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setLoggedInUser((prevUser) => ({ ...prevUser, [name]: value }));
-  }; 
+    setLoggedInUser(prevUser => ({ ...prevUser, [name]: value }));
+  };
 
   const handleUpdate = () => {
     try {
-      if(loggedInUser.password===passwordConfirmation){
+      if (loggedInUser.password === passwordConfirmation) {
         const response = fetch(`http://localhost:5000/users/${user.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(loggedInUser),
-        }).then((response) => response.json())
+        }).then(response => response.json());
         alert("Dados atualizados");
-        console.log(loggedInUser)
+        console.log(loggedInUser);
       }
-  } catch (error) {
-    console.error("Erro:", error);
-  }
-}
-
-  if(loggedUser==false || user.admin==true){
-    window.location.href = "/";
-    if(acessed==0) {
-      alert("Faça seu login de usuário para acessar essa tela!")
+    } catch (error) {
+      console.error("Erro:", error);
     }
-    return
+  };
+
+  if (loggedUser == false || user.admin == true) {
+    window.location.href = "/";
+    if (acessed == 0) {
+      alert("Faça seu login de usuário para acessar essa tela!");
+    }
+    return;
   }
 
   return (
@@ -104,7 +109,7 @@ export const Home = () => {
         />
         <TextField
           type="password"
-          onChange={(event) => setPasswordConfirmation(event.target.value)}
+          onChange={event => setPasswordConfirmation(event.target.value)}
           value={passwordConfirmation}
           label="Confirm Password"
           placeholder="confirme sua senha"

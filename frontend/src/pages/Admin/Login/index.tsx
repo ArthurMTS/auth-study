@@ -7,12 +7,17 @@ import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
 
 export const LoginAdmin = () => {
-  const {setUser, setLoggedAdmin} = useContext(UserContext);
-  const [loggedInAdmin, setLoggedInAdmin] = useState<iUser>({email: "", password: "", admin: true, name: "" });
-  
+  const { setUser, setLoggedAdmin } = useContext(UserContext);
+  const [loggedInAdmin, setLoggedInAdmin] = useState<iUser>({
+    email: "",
+    password: "",
+    admin: true,
+    name: "",
+  });
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setLoggedInAdmin((prevUser) => ({ ...prevUser, [name]: value }));
+    setLoggedInAdmin(prevUser => ({ ...prevUser, [name]: value }));
   };
 
   const handleLogin = async () => {
@@ -23,22 +28,22 @@ export const LoginAdmin = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(loggedInAdmin),
-      }).then((response) => response.json())
-      .then((loggedInUser) => {
-        if (loggedInUser) {
-          setLoggedAdmin(true);
-          alert("Olá, "+loggedInUser.name+"! Como vai?"); 
-          window.location.href = "/dashboard"
-        }
-        setUser(loggedInUser);
-        console.log("usuario: ", loggedInUser)
-      });
-  
+      })
+        .then(response => response.json())
+        .then(loggedInUser => {
+          if (loggedInUser) {
+            setLoggedAdmin(true);
+            alert("Olá, " + loggedInUser.name + "! Como vai?");
+            window.location.href = "/dashboard";
+          }
+          setUser(loggedInUser);
+          console.log("usuario: ", loggedInUser);
+        });
     } catch (error) {
       console.error("Erro:", error);
     }
-      // Limpar os dados do usuário após o login
-      // setUser({ email: "", password: "" });
+    // Limpar os dados do usuário após o login
+    // setUser({ email: "", password: "" });
   };
   return (
     <Box
@@ -52,7 +57,7 @@ export const LoginAdmin = () => {
         gap: 5,
       }}
     >
-      <Typography sx={{ fontSize: 26, textAlign: "center", }}>
+      <Typography sx={{ fontSize: 26, textAlign: "center" }}>
         Entre ou crie uma nova conta de administrador
       </Typography>
 

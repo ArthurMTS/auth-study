@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState} from "react";
+import { createContext, ReactNode, useState } from "react";
 
 import { iUser } from "@/config/types";
 import { useStorage } from "@/hooks/useStorage";
@@ -26,7 +26,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [loggedAdmin, setLoggedAdmin] = useStorage("logged", false);
   const [users, setUsers] = useState<iUser[]>();
 
-
   function getUsers() {
     try {
       const response = fetch("http://localhost:5000/users/", {
@@ -35,18 +34,27 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(users),
-      }).then((response) => response.json())
-      .then((user) => setUsers(user))
+      })
+        .then(response => response.json())
+        .then(user => setUsers(user));
     } catch (error) {
       console.error("Erro:", error);
     }
-  }  
+  }
 
   return (
-    <UserContext.Provider value={{ 
-      user, setUser, setLoggedAdmin,
-     loggedUser, setLoggedUser, loggedAdmin, getUsers, users
-    }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        setLoggedAdmin,
+        loggedUser,
+        setLoggedUser,
+        loggedAdmin,
+        getUsers,
+        users,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

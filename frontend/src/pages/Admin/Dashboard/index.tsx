@@ -6,7 +6,8 @@ import { User } from "@/components";
 import { iUser } from "@/config/types";
 
 export const Dashboard = () => {
-  const {setLoggedAdmin, loggedAdmin, user, getUsers, users} = useContext(UserContext)
+  const { setLoggedAdmin, loggedAdmin, user, getUsers, users } =
+    useContext(UserContext);
   const [acessed, setAcessed] = useState(0);
 
   const handleLogOut = () => {
@@ -14,8 +15,8 @@ export const Dashboard = () => {
     setLoggedAdmin(false);
   };
 
-  const handleDelete = (id:number | undefined) => {
-    if(confirm("deseja deletar o usuário?")) {
+  const handleDelete = (id: number | undefined) => {
+    if (confirm("deseja deletar o usuário?")) {
       try {
         const response = fetch(`http://localhost:5000/users/${id}`, {
           method: "DELETE",
@@ -23,7 +24,7 @@ export const Dashboard = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(user),
-        })
+        });
         alert("Deletado!");
         window.location.reload();
       } catch (error) {
@@ -32,17 +33,15 @@ export const Dashboard = () => {
     }
   };
 
-  if(loggedAdmin==false || user.admin==false) {
+  if (loggedAdmin == false || user.admin == false) {
     window.location.href = "/admin";
-    if(acessed==0) {
-      alert("Faça seu login de admin para acessar essa tela!")
+    if (acessed == 0) {
+      alert("Faça seu login de admin para acessar essa tela!");
     }
-    return
+    return;
   }
 
   getUsers();
-
-  console.log("usuarios:", users)
 
   return (
     <Box sx={{ width: 500, margin: "20px auto" }}>
@@ -62,14 +61,18 @@ export const Dashboard = () => {
         sx={{ marginTop: 5, display: "flex", flexDirection: "column", gap: 2 }}
       >
         {users?.map((itemUser: iUser) => {
-          if(itemUser.admin == false) {
-            return(
+          if (itemUser.admin == false) {
+            return (
               <>
-                <User key={itemUser.id}
-                  id={itemUser.id} name={itemUser.name} email={itemUser.email} 
-                  handleRemove={() => handleDelete(itemUser.id)}/>
+                <User
+                  key={itemUser.id}
+                  id={itemUser.id}
+                  name={itemUser.name}
+                  email={itemUser.email}
+                  handleRemove={() => handleDelete(itemUser.id)}
+                />
               </>
-            )
+            );
           }
         })}
       </Box>

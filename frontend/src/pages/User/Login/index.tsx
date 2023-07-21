@@ -7,12 +7,17 @@ import { iUser } from "@/config/types";
 import { UserContext } from "@/contexts/user";
 
 export const LoginUser = () => {
-  const {setUser, setLoggedUser, loggedUser} = useContext(UserContext);
-  const [loggedInUser, setLoggedInUser] = useState<iUser>({email: "", password: "", admin: false, name: ""});
+  const { setUser, setLoggedUser, loggedUser } = useContext(UserContext);
+  const [loggedInUser, setLoggedInUser] = useState<iUser>({
+    email: "",
+    password: "",
+    admin: false,
+    name: "",
+  });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setLoggedInUser((prevUser) => ({ ...prevUser, [name]: value }));
+    setLoggedInUser(prevUser => ({ ...prevUser, [name]: value }));
   };
 
   const handleLogin = async () => {
@@ -23,22 +28,26 @@ export const LoginUser = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(loggedInUser),
-      }).then((response) => response.json())
-      .then((loggedInUser) => {
-        if (loggedInUser) {
-          setLoggedUser(true);
-          alert("Olá, "+loggedInUser.name+"! É um prazer contar novamente com o seu acesso!"); 
-          window.location.href = "/home";
-        }
-        setUser(loggedInUser);
-        console.log("usuario: ", loggedInUser)
-      });
-  
+      })
+        .then(response => response.json())
+        .then(loggedInUser => {
+          if (loggedInUser) {
+            setLoggedUser(true);
+            alert(
+              "Olá, " +
+                loggedInUser.name +
+                "! É um prazer contar novamente com o seu acesso!",
+            );
+            window.location.href = "/home";
+          }
+          setUser(loggedInUser);
+          console.log("usuario: ", loggedInUser);
+        });
     } catch (error) {
       console.error("Erro:", error);
     }
-      // Limpar os dados do usuário após o login
-      // setUser({ email: "", password: "" });
+    // Limpar os dados do usuário após o login
+    // setUser({ email: "", password: "" });
   };
 
   return (
