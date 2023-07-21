@@ -35,9 +35,7 @@ export const Dashboard = () => {
 
   if (loggedAdmin == false || user.admin == false) {
     window.location.href = "/admin";
-    if (acessed == 0) {
-      alert("Faça seu login de admin para acessar essa tela!");
-    }
+    if (acessed == 0) alert("Faça seu login de admin para acessar essa tela!");
     return;
   }
 

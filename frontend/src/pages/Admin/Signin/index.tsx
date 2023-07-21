@@ -31,7 +31,6 @@ export const SigninAdmin = () => {
   };
 
   const handleSignin = async () => {
-    console.log("dados no new admin:", newAdmin);
     if (newAdmin.password !== passwordConfirmation && !completedEmail) {
       console.error("A senha e a confirmação de senha não correspondem");
       alert("A senha e a confirmação de senha não correspondem");
@@ -50,13 +49,10 @@ export const SigninAdmin = () => {
         if (response.ok) {
           const userData = await response.json();
           alert("Cadastro realizado, faça seu login para ter mais acesso!");
-        } else {
-          console.error("erro de cadastro");
-        }
+        } else console.error("erro de cadastro");
       } catch (error) {
         console.log("Erro", error);
       }
-      console.log("handle sign in");
     }
   };
   return (

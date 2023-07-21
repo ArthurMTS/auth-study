@@ -46,8 +46,6 @@ export const LoginUser = () => {
     } catch (error) {
       console.error("Erro:", error);
     }
-    // Limpar os dados do usuário após o login
-    // setUser({ email: "", password: "" });
   };
 
   return (

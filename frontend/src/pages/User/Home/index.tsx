@@ -31,9 +31,7 @@ export const Home = () => {
         });
         alert("usuário deletado");
         setLoggedUser(false);
-      } else {
-        alert("Para excluir é necessario confirmar senha");
-      }
+      } else alert("Para excluir é necessario confirmar senha");
     } catch (error) {
       console.error("Erro:", error);
     }
@@ -55,7 +53,6 @@ export const Home = () => {
           body: JSON.stringify(loggedInUser),
         }).then(response => response.json());
         alert("Dados atualizados");
-        console.log(loggedInUser);
       }
     } catch (error) {
       console.error("Erro:", error);
@@ -64,9 +61,8 @@ export const Home = () => {
 
   if (loggedUser == false || user.admin == true) {
     window.location.href = "/";
-    if (acessed == 0) {
+    if (acessed == 0)
       alert("Faça seu login de usuário para acessar essa tela!");
-    }
     return;
   }
 

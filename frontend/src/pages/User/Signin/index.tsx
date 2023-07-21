@@ -48,13 +48,10 @@ export const SigninUser = () => {
         if (response.ok) {
           const userData = await response.json();
           alert("Cadastro realizado, faça seu login para ter mais acesso!");
-        } else {
-          console.error("erro de cadastro");
-        }
+        } else console.error("erro de cadastro");
       } catch (error) {
         console.log("Erro", error);
       }
-      console.log("handle sign in");
     }
   };
 
