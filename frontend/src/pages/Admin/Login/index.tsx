@@ -7,7 +7,7 @@ import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
 
 export const LoginAdmin = () => {
-  const { setUser, setLoggedAdmin } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [loggedInAdmin, setLoggedInAdmin] = useState<iUser>({
     email: "",
     password: "",
@@ -32,7 +32,6 @@ export const LoginAdmin = () => {
         .then(response => response.json())
         .then(loggedInUser => {
           if (loggedInUser) {
-            setLoggedAdmin(true);
             alert("Olá, " + loggedInUser.name + "! Como vai?");
             window.location.href = "/dashboard";
           }

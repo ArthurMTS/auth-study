@@ -6,13 +6,12 @@ import { User } from "@/components";
 import { iUser } from "@/config/types";
 
 export const Dashboard = () => {
-  const { setLoggedAdmin, loggedAdmin, user, getUsers, users } =
-    useContext(UserContext);
+  const { setUser, user, getUsers, users } = useContext(UserContext);
   const [acessed, setAcessed] = useState(0);
 
   const handleLogOut = () => {
     setAcessed(1);
-    setLoggedAdmin(false);
+    setUser({} as iUser);
   };
 
   const handleDelete = (id: number | undefined) => {
@@ -33,7 +32,7 @@ export const Dashboard = () => {
     }
   };
 
-  if (loggedAdmin == false || user.admin == false) {
+  if (!user.name || !user.admin) {
     window.location.href = "/admin";
     if (acessed == 0) alert("Faça seu login de admin para acessar essa tela!");
     return;

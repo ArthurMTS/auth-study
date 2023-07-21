@@ -6,11 +6,7 @@ import { useStorage } from "@/hooks/useStorage";
 interface iUserContext {
   user: iUser;
   users?: iUser[];
-  loggedUser: boolean;
-  loggedAdmin: boolean;
   setUser: (user: iUser) => void;
-  setLoggedUser: (state: boolean) => void;
-  setLoggedAdmin: (state: boolean) => void;
   getUsers: () => void;
 }
 
@@ -22,8 +18,6 @@ export const UserContext = createContext({} as iUserContext);
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useStorage<iUser>("user", {} as iUser);
-  const [loggedUser, setLoggedUser] = useStorage("logged", false);
-  const [loggedAdmin, setLoggedAdmin] = useStorage("logged", false);
   const [users, setUsers] = useState<iUser[]>();
 
   function getUsers() {
@@ -47,10 +41,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       value={{
         user,
         setUser,
-        setLoggedAdmin,
-        loggedUser,
-        setLoggedUser,
-        loggedAdmin,
         getUsers,
         users,
       }}

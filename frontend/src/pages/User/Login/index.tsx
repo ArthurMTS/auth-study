@@ -7,7 +7,7 @@ import { iUser } from "@/config/types";
 import { UserContext } from "@/contexts/user";
 
 export const LoginUser = () => {
-  const { setUser, setLoggedUser, loggedUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [loggedInUser, setLoggedInUser] = useState<iUser>({
     email: "",
     password: "",
@@ -32,7 +32,6 @@ export const LoginUser = () => {
         .then(response => response.json())
         .then(loggedInUser => {
           if (loggedInUser) {
-            setLoggedUser(true);
             alert(
               "Olá, " +
                 loggedInUser.name +

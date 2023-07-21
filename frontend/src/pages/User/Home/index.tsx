@@ -4,7 +4,7 @@ import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
 
 export const Home = () => {
-  const { loggedUser, setLoggedUser, user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [acessed, setAcessed] = useState(0);
   const [loggedInUser, setLoggedInUser] = useState<iUser>({
@@ -16,7 +16,7 @@ export const Home = () => {
 
   const handleLogOut = () => {
     setAcessed(1);
-    setLoggedUser(false);
+    setUser({} as iUser);
   };
 
   const handleDelete = () => {
@@ -30,7 +30,7 @@ export const Home = () => {
           body: JSON.stringify(loggedInUser),
         });
         alert("usuário deletado");
-        setLoggedUser(false);
+        setUser({} as iUser);
       } else alert("Para excluir é necessario confirmar senha");
     } catch (error) {
       console.error("Erro:", error);
@@ -58,8 +58,7 @@ export const Home = () => {
       console.error("Erro:", error);
     }
   };
-
-  if (loggedUser == false || user.admin == true) {
+  if (!user.name || user.admin) {
     window.location.href = "/";
     if (acessed == 0)
       alert("Faça seu login de usuário para acessar essa tela!");
