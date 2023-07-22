@@ -2,6 +2,7 @@ import { createContext, ReactNode, useState } from "react";
 
 import { iUser } from "@/config/types";
 import { useStorage } from "@/hooks/useStorage";
+import { URL } from "@/constants/urls";
 
 interface iUserContext {
   user: iUser;
@@ -22,7 +23,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   function getUsers() {
     try {
-      const response = fetch("http://localhost:5000/users/", {
+      fetch(URL + "users/", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

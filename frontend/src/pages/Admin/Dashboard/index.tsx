@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "@/contexts/user";
 import { User } from "@/components";
 import { iUser } from "@/config/types";
+import { URL } from "@/constants/urls";
 
 export const Dashboard = () => {
   const { setUser, user, getUsers, users } = useContext(UserContext);
@@ -17,7 +18,7 @@ export const Dashboard = () => {
   const handleDelete = (id: number | undefined) => {
     if (confirm("deseja deletar o usuário?")) {
       try {
-        const response = fetch(`http://localhost:5000/users/${id}`, {
+        fetch(URL + `users/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",

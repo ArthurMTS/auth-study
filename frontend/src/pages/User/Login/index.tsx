@@ -22,7 +22,7 @@ export const LoginUser = () => {
 
   const handleLogin = async () => {
     try {
-      const response = fetch("http://localhost:5000/users/login", {
+      fetch(URL + "users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

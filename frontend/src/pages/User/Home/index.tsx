@@ -22,7 +22,7 @@ export const Home = () => {
   const handleDelete = () => {
     try {
       if (loggedInUser.password === passwordConfirmation) {
-        const response = fetch(`http://localhost:5000/users/${user.id}`, {
+        fetch(URL + `users/${user.id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export const Home = () => {
   const handleUpdate = () => {
     try {
       if (loggedInUser.password === passwordConfirmation) {
-        const response = fetch(`http://localhost:5000/users/${user.id}`, {
+        fetch(URL + `users/${user.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

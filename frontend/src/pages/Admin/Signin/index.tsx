@@ -38,7 +38,7 @@ export const SigninAdmin = () => {
       return;
     } else {
       try {
-        const response = await fetch("http://localhost:5000/users", {
+        const response = await fetch(URL + "/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
