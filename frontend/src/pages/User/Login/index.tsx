@@ -3,8 +3,8 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
-import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
+import { login } from "@/utils/user";
 
 export const LoginUser = () => {
   const [email, setEmail] = useState("");
@@ -22,13 +22,7 @@ export const LoginUser = () => {
   }, [user]);
 
   const handleLogin = async () => {
-    const data = await api
-      .post("/users/login", {
-        email,
-        password,
-        admin: false,
-      })
-      .then((response) => response.data);
+    const data = await login(email, password, false);
     if (data) {
       delete data.password;
       setUser(data);

@@ -4,6 +4,7 @@ import { UserContext } from "@/contexts/user";
 import { useNavigate } from "react-router-dom";
 import { iUser } from "@/config/types";
 import { api } from "@/config/api";
+import { deleteUser, update } from "@/utils/user";
 
 interface userFields {
   email: string;
@@ -39,7 +40,7 @@ export const Home = () => {
     if (!params.password) {
       delete params.password;
     }
-    await api.put(`/users/${user.id}`, params);
+    await update(user.id, params);
     alert("Dados atualizados com sucesso!");
     handleLogOut();
   };
@@ -48,7 +49,7 @@ export const Home = () => {
     navigate("/");
   };
   const handleDelete = async () => {
-    await api.delete(`/users/${user.id}`);
+    await deleteUser(user.id);
     alert("Dados excluidos com sucesso!");
     handleLogOut();
   };

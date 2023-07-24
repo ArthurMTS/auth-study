@@ -7,6 +7,7 @@ import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
+import { signin } from "@/utils/user";
 
 export const SigninUser = () => {
   const [username, setUsername] = useState("");
@@ -40,13 +41,7 @@ export const SigninUser = () => {
     if (exist) {
       alert("Já existe um usuário cadastrado com esses nome e email");
     } else {
-      api.post("/users", {
-        name: username,
-        admin: false,
-        email,
-        password,
-      });
-
+      signin(username, false, email, password);
       alert("Usuário cadastrado");
     }
   };
