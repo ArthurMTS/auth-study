@@ -3,9 +3,8 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "@/pages";
-import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
-import { iUser } from "@/config/types";
+import { createAdminUser, getUsers } from "@/utils/admin";
 
 export const SigninAdmin = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +23,7 @@ export const SigninAdmin = () => {
   }, []);
 
   const handleSignin = async () => {
-    const response = await api.get<iUser[]>("/users");
+    const response = await getUsers();
 
     const exist = response.data.some(
       (user) => user.admin && user.email === email && user.name === username
@@ -33,12 +32,7 @@ export const SigninAdmin = () => {
     if (exist) {
       alert("Já existe um usuário cadastrado com esse nome e email");
     } else {
-      api.post("/users", {
-        name: username,
-        admin: true,
-        email,
-        password,
-      });
+      createAdminUser(username, true, email, password);
 
       alert("Usuário administrador cadastrado");
     }

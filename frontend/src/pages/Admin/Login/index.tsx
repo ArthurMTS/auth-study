@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { PageRoutes } from "@/pages";
 import { api } from "@/config/api";
 import { UserContext } from "@/contexts/user";
+import { login } from "@/utils/admin";
 
 export const LoginAdmin = () => {
   const [email, setEmail] = useState("");
@@ -20,13 +21,8 @@ export const LoginAdmin = () => {
   }, [user]);
 
   const handleLogin = async () => {
-    const data = await api
-      .post("/users/login", {
-        email,
-        password,
-        admin: true,
-      })
-      .then((response) => response.data);
+    const data = await login(email, password, true);
+
     if (data) {
       delete data.password;
       setUser(data);

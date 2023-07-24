@@ -3,8 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { User } from "@/components";
 import { UserContext } from "@/contexts/user";
 import { iUser } from "@/config/types";
-import { api } from "@/config/api";
 import { useNavigate } from "react-router-dom";
+import { load, removeUser } from "@/utils/admin";
 
 export const Dashboard = () => {
   const { user, setUser } = useContext(UserContext);
@@ -17,9 +17,7 @@ export const Dashboard = () => {
   }, [user]);
 
   const loadUsers = async () => {
-    const data = await api
-      .get<iUser[]>("/users")
-      .then((response) => response.data);
+    const data = await load();
 
     setUsers(data.filter((currentUser) => !currentUser.admin));
   };
@@ -30,7 +28,7 @@ export const Dashboard = () => {
   };
 
   const handleRemove = async (id: number) => {
-    await api.delete(`/users/${id}`);
+    await removeUser(id);
     loadUsers();
   };
 
